@@ -1,0 +1,61 @@
+---
+type Props = {
+  data?: Array<{
+    id: string;
+    title: string;
+    content: string;
+  }>;
+};
+
+const { data } = Astro.props;
+const data2 = [
+  {
+    id: "1",
+    title: "Tab 1",
+    content: "<h4 style='color: red;'>Tab 1 content</h4>",
+  },
+  {
+    id: "2",
+    title: "Tab 2",
+    content: "Tab 2 content",
+  },
+  {
+    id: "3",
+    title: "Tab 3",
+    content: "Tab 3 content",
+  },
+];
+---
+
+<!-- Create Tabs Markup -->
+<ul role="tablist">
+  {
+    data2 &&
+      data2.map((item, index) => (
+        <li role="presentation">
+          <a
+            href={`#panel${index + 1}`}
+            role="tab"
+            id={`tab${index + 1}`}
+            aria-selected={index === 0}
+          >
+            {item.title}
+          </a>
+        </li>
+      ))
+  }
+</ul>
+{
+  data2 &&
+    data2.map((item, index) => (
+      <section
+        id={`section${index + 1}`}
+        role="tabpanel"
+        aria-labelledby={`tab${index + 1}`}
+        aria-hidden={index === 0 ? "false" : "true"}
+        hidden={index !== 0}
+        tabindex="-1"
+        set:html={item.content}
+      />
+    ))
+}
